@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# etc
+textbook/
+prog_lang.png
+exam/
+
