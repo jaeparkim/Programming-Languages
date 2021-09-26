@@ -132,4 +132,5 @@ dmypy.json
 textbook/
 prog_lang.png
 exam/
-
+.DS_Store
+!*.lambda
