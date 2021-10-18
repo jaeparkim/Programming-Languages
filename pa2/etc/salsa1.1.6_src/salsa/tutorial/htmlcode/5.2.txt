@@ -1,3 +1,0 @@
-HelloWorld helloWorld = new HelloWorld() 
-  at (new UAN("uan://nameserver/id"), 
-      new UAL("rmsp://host1:4040/id"));

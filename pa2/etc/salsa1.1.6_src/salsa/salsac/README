@@ -1,4 +1,0 @@
-jjtree Salsa0.x.jjt
-javacc Salsa0.x.jj
-javac *java
-java SalsaParser < prog.salsa

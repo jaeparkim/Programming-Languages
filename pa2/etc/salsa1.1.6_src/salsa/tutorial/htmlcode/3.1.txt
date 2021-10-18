@@ -1,2 +1,0 @@
-// An actor reference with type HelloWorld
-HelloWorld myRef;

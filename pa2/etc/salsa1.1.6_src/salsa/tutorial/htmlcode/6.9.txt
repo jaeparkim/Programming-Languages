@@ -1,2 +1,0 @@
-token email =  book<-email(new String("kaoutar"));
-book<-addUser(email, new String("kaoutar")):waitfor(email); 

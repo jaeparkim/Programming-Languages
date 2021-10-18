@@ -1,3 +1,0 @@
-token x = a<-migrate("rmsp://europa.cs.rpi.edu:4040");
-token y = b<-migrate("rmsp://europa.cs.rpi.edu:4040");
-a<-compare(b) : waitfor(x,y); 
