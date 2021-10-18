@@ -26,6 +26,12 @@ Roland Rao and Jae Park
 * Eta-reduce is not done correctly under certain unknown circumstances as of _10/11/2021_
 
 ### Run 
+Haskell compiler version
+```bash
+$ ghc --version
+The Glorious Glasgow Haskell Compilation System, version 8.10.7
+```
+
 Try running the run.sh script which contains this line
 ```bash
 $ runghc main.hs input.lambda
