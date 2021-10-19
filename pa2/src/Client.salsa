@@ -75,17 +75,15 @@ behavior Client {
     }
 
     void createDirectoryService(String s) {
-        standardOutput<-println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-
+        standardOutput<-print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        standardOutput<-print(s);
         String[] tokens = s.split(" ");
         String uan_str = tokens[1];
         String ual_str = tokens[2];
-
-
-        standardOutput<-println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        standardOutput<-print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
         System.out.println("Create Directory Service Method");
-        DirectoryServer d = new DirectoryServer() at (new UAN("uan://localhost:3030/ds"), new UAL("rmsp://localhost:4040"));
+        DirectoryServer d = new DirectoryServer() at (new UAN("uan_str"), new UAL(ual_str));
 
         
         
