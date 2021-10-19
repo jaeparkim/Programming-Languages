@@ -1,6 +1,8 @@
 module src;
 import java.util.*;
 import src.FileUtility;
+import java.io.*;
+import salsa.naming.*;
 
 
 /*
@@ -17,6 +19,8 @@ behavior Client {
 
     int blockSize = 64;
     FileUtility inputScript;
+
+    private Vector nodes = new Vector();
 
 
     /* Your program's first input must be the path to the 
@@ -45,9 +49,66 @@ behavior Client {
         if (s == null) {
             return;
         } else {
+            String firstChar = s.substring(0,1);
+            if (firstChar.equals("d")){ 
+                createDirectoryService(s);
+            }
+            else if (firstChar.equals("f")) { 
+                createFileServer(s);
+            }
+            else if (firstChar.equals("c")) { 
+                create(s);
+            }
+            else if (firstChar.equals("g")) { 
+                get(s);
+            }
+            else if (firstChar.equals("q")) { 
+                quit(s);
+            }
+
+
+
             standardOutput <- println(s) @
             scanInput();
         }
         
+    }
+
+    void createDirectoryService(String s) {
+        standardOutput<-println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+
+        String[] tokens = s.split(" ");
+        String uan_str = tokens[1];
+        String ual_str = tokens[2];
+
+
+        standardOutput<-println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+
+        System.out.println("Create Directory Service Method");
+        DirectoryServer d = new DirectoryServer() at (new UAN("uan://localhost:3030/ds"), new UAL("rmsp://localhost:4040"));
+
+        
+        
+
+
+    }
+    
+    void createFileService(String s) {
+        System.out.println("Create File Service Method");
+    }
+
+
+    void create(String fileName){
+        System.out.println("Create Method");
+        // filePath = "/input/" + fileName;
+        // File f = new File(filePath);
+    }
+
+    void get(String s) {
+        System.out.println("Get Method");
+    }
+
+    void quit(String s) {
+        System.out.println("Quit Method");
     }
 }

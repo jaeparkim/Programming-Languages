@@ -19,6 +19,11 @@ behavior DirectoryServer {
 
     
     int blockSize = 64;
+    int id;
+
+    DirectoryServer(int i){
+      id = i;
+    }
 
 
     /* Take a file and save it to known file servers.
@@ -35,6 +40,7 @@ behavior DirectoryServer {
      */
     /* You may pass and return any data you need. */
     void store(String fileName, String content) {
+      System.out.println("IN THE DIRECTORY SERVER FILE");
     }
 
 
