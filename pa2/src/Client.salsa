@@ -76,23 +76,15 @@ behavior Client {
     }
 
     void createDirectoryService(String s) {
-        standardOutput <- println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n"); 
         standardOutput <- println(s); 
         String[] tokens = s.split(" ");
         String uan_str = tokens[1];
         String ual_str = tokens[2];
         standardOutput <- println(uan_str);
         standardOutput <- println(ual_str);
-        standardOutput <- println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX"); 
-
         standardOutput <- println("Create Directory Service Method"); 
-        DirectoryServer a = new DirectoryServer(0) at (new UAN(uan_str), new UAL(ual_str));
+        new DirectoryServer(0) at (new UAN(uan_str), new UAL(ual_str));
         d = (DirectoryServer) DirectoryServer.getReferenceByName(uan_str);
-        d <- store("filename", "string");
-
-        
-
-
     }
     
     void createFileService(String s) {
@@ -107,14 +99,28 @@ behavior Client {
     }
 
 
-    void create(String fileName){
-        System.out.println("Create Method");
-        // filePath = "/input/" + fileName;
-        // File f = new File(filePath);
+    void create(String s){
+        String[] tokens = s.split(" ");
+        String ds_uan_str = tokens[1];
+        String filename = tokens[2];
+        StandardOutput <- println("Create Method");
+        DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(ds_uan_str);
+        contents = inputScript.load(filename); // fix path to be absolute
+        d <- store(filename, contents);
     }
 
     void get(String s) {
-        System.out.println("Get Method");
+        String[] tokens = s.split(" ");
+        String ds_uan_str = tokens[1];
+        String filename = tokens[2];
+        DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(ds_uan_str);
+        Vector<String> chunks = d <- retrieve(filename);
+
+        for (int i = 0; i < chunks.capacity(); i++){
+            FileServer fs = (FileServer) FileServer.getReferenceByName(chunks.elementAt(i));
+            text += fs <- retrieve(fileName + "_" + Integer.toString(i+1), i);
+        }
+        
     }
 
     void quit(String s) {

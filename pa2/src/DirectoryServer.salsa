@@ -20,10 +20,15 @@ behavior DirectoryServer {
     
     int blockSize = 64;
     int id;
+    Vector<String> fs = new Vector<String>();
+    FileUtility f = new FileUtility();
+    Hashtable<String, Vector<String>> metaData;
 
     DirectoryServer(int i){
       id = i;
+      metaData = new Hashtable<String, Vector<String>>();
     }
+
 
 
     /* Take a file and save it to known file servers.
@@ -40,14 +45,42 @@ behavior DirectoryServer {
      */
     /* You may pass and return any data you need. */
     void store(String fileName, String content) {
-      standardOutput <- println("IN THE DIRECTORY SERVER FILE");
+      metaData.put(fileName, new Vector<String>());
+      int fileNum = (content.length() / 64) + 1;
+      int fsNum = fs.capacity();
+      for (int i = 0; i < fileNum; i++){
+        StandardOutput <- println("Storing " + fileName + " block " + Integer.toString(i + 1) + " in fs: " + fs.elementAt(i % fs.capacity()));
+        String chunk = "";
+        if(i == fileNum){ chunk = content.substring(i * 64); }
+        else { String chunk = content.substring(i*64, (i+1)*64); }
+        metaData.get(fileName).add(fs.elementAt(i % fs.capacity()))
+        FileServer fs = (FileServer) FileServer.getReferenceByName(fs.elementAt(i % fs.capacity()));
+        fs <- store(fileName + "_" + Integer.toString(i+1), chunk);
+      }
+      
     }
 
 
     /* Given a file name, return the servers and blocks it's located on. */
     /* You may pass and return any data you need. */
-    void retrieve() {
-        // @currentContinuation;
+    Vector<String> retrieve(String fileName) {
+      Vector chunks = metaData.get(fileName);
+      return chunks
+
+      return text;
+        
+    }
+
+    void newFileServer(String fs_uan_str){
+      if(fs.isEmpty()){
+        fs.add(fs_uan_str);
+      }else{
+        for(int i = 0; i < fs.capacity(); i++){
+          if(fs_uan_str.compareToIgnoreCase(fs.elementAt(i) < 0) {
+            fs.insertElementAt(i);
+          }
+        }
+      }
     }
 
 }

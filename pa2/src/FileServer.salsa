@@ -25,17 +25,21 @@ behavior FileServer {
      */
     /* You may pass and return any data you need. */
     void store(String fileName, String contents) {
+      FileWriter f = new FileWriter(fileName);
+      f.write(contents);
+      f.close();
     }
 
 
     /* Retrieve some file block, possibly with order information */
     /* You may pass and return any data you need. */
     void retrieve(String fileName) {
-        // @currentContinuation;
+      Scanner in = new Scanner(fileName);
+      return in.nextLine();
     }
 
     void setDirectoryService(String ds_uan_str, String fs_uan_str){
-      ds = (DirectoryService) DirectoryService.getReferenceByName(ds_uan_str);
+      DirectoryService ds = (DirectoryService) DirectoryService.getReferenceByName(ds_uan_str);
       ds <- alertNewFileService(fs_uan_str);
     }
 }
