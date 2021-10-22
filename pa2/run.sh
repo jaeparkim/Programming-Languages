@@ -1,4 +1,10 @@
 #!/bin/bash
+cd src/
+rm *.class
+rm Client.java
+rm DirectoryServer.java
+rm FileServer.java
+cd ../
 
 # stage 1 compile
 java -cp "salsa1.1.6.jar:." salsac.SalsaCompiler src/*.salsa 
@@ -22,7 +28,7 @@ fi
 ## Run the compiled code ##
 
 echo "running"
-mkdir "downloads"
+# mkdir "downloads"
 java -cp "salsa1.1.6.jar:." wwc.naming.WWCNamingServer -p 3030 > downloads/namingServer.txt &
 server=$!
 java -cp "salsa1.1.6.jar:." wwc.messaging.Theater 4040 > downloads/theater1.txt &
@@ -82,5 +88,9 @@ echo " "
 read -p "Press enter to continue..."
 
 
-rm -rf downloads
-rm -rf servers
+cd src/
+rm *.class
+rm Client.java
+rm DirectoryServer.java
+rm FileServer.java
+cd ../
