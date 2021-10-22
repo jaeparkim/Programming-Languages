@@ -6,6 +6,7 @@ venv/
 # etc
 textbook/
 prog_lang.png
-exam/
+exam*/
 .DS_Store
 !*.lambda
+test/
