@@ -40,7 +40,7 @@ behavior DirectoryServer {
      */
     /* You may pass and return any data you need. */
     void store(String fileName, String content) {
-      System.out.println("IN THE DIRECTORY SERVER FILE");
+      standardOutput <- println("IN THE DIRECTORY SERVER FILE");
     }
 
 

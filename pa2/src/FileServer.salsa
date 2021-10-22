@@ -15,6 +15,7 @@ behavior FileServer {
 
 
     int blockSize = 64;
+    DirectoryService ds;
 
 
     /* Save some data to file
@@ -31,5 +32,10 @@ behavior FileServer {
     /* You may pass and return any data you need. */
     void retrieve(String fileName) {
         // @currentContinuation;
+    }
+
+    void setDirectoryService(String ds_uan_str, String fs_uan_str){
+      ds = (DirectoryService) DirectoryService.getReferenceByName(ds_uan_str);
+      ds <- alertNewFileService(fs_uan_str);
     }
 }
