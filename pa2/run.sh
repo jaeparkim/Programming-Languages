@@ -88,12 +88,13 @@ echo "Check their contents now."
 echo " "
 read -p "Press enter to continue..."
 
+
 # block comment
-# :'
+:'
 cd src/
 rm *.class
 rm Client.java
 rm DirectoryServer.java
 rm FileServer.java
 cd ../
-# '
+'
