@@ -1,5 +1,6 @@
 module src;
-import java.util.Collections;
+import java.util.*;
+import java.io.*;
 
 
 /*
@@ -20,13 +21,12 @@ behavior DirectoryServer {
     
     int blockSize = 64;
     int id;
-    Vector<String> fs = new Vector<String>();
-    FileUtility f = new FileUtility();
-    Hashtable<String, Vector<String>> metaData;
+    Vector fs = new Vector();
+    Hashtable metaData;
 
-    DirectoryServer(int i){
+    DirectoryServer(int i) {
       id = i;
-      metaData = new Hashtable<String, Vector<String>>();
+      metaData = new Hashtable();
     }
 
 
@@ -45,42 +45,48 @@ behavior DirectoryServer {
      */
     /* You may pass and return any data you need. */
     void store(String fileName, String content) {
-      metaData.put(fileName, new Vector<String>());
+      metaData.put(fileName, new Vector());
       int fileNum = (content.length() / 64) + 1;
-      int fsNum = fs.capacity();
+      int fsNum = fs.size();
+      standardOutput <- println(Integer.toString(fsNum));
       for (int i = 0; i < fileNum; i++){
-        StandardOutput <- println("Storing " + fileName + " block " + Integer.toString(i + 1) + " in fs: " + fs.elementAt(i % fs.capacity()));
-        String chunk = "";
-        if(i == fileNum){ chunk = content.substring(i * 64); }
-        else { String chunk = content.substring(i*64, (i+1)*64); }
-        metaData.get(fileName).add(fs.elementAt(i % fs.capacity()))
-        FileServer fs = (FileServer) FileServer.getReferenceByName(fs.elementAt(i % fs.capacity()));
-        fs <- store(fileName + "_" + Integer.toString(i+1), chunk);
+        standardOutput <- println("Storing " + fileName + " block " + Integer.toString(i + 1) + " in fs: " + fs.elementAt(i % fs.size()));
+        String block = "";
+
+        if(i == fileNum) {
+          block = content.substring(i * 64);
+        }
+        else {
+          String chunk = content.substring(i*64, (i+1)*64);
+        }
+        Vector v = (Vector) metaData.get(fileName);
+        String fs_uan = (String) fs.elementAt(i % fs.size());
+        v.add(fs_uan);
+        FileServer fs = (FileServer) FileServer.getReferenceByName(fs_uan);
+        fs <- store(fileName + "_" + Integer.toString(i+1), block);
       }
-      
     }
 
 
     /* Given a file name, return the servers and blocks it's located on. */
     /* You may pass and return any data you need. */
-    Vector<String> retrieve(String fileName) {
-      Vector chunks = metaData.get(fileName);
-      return chunks
-
-      return text;
-        
+    Vector retrieve(String fileName) {
+      Vector blocks = (Vector) metaData.get(fileName);
+      
+      return blocks;        
     }
 
     void newFileServer(String fs_uan_str){
-      if(fs.isEmpty()){
+      standardOutput <- println("New File Server Created!!!");
+      if(fs.isEmpty()) {
         fs.add(fs_uan_str);
-      }else{
+      }
+      else {
         for(int i = 0; i < fs.capacity(); i++){
-          if(fs_uan_str.compareToIgnoreCase(fs.elementAt(i) < 0) {
-            fs.insertElementAt(i);
+          if(fs_uan_str.compareToIgnoreCase((String) fs.elementAt(i)) < 0) {
+            fs.insertElementAt(fs_uan_str, i);
           }
         }
       }
     }
-
 }

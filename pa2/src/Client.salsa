@@ -3,6 +3,7 @@ import java.util.*;
 import src.FileUtility;
 import java.io.*;
 import salsa.naming.*;
+import java.lang.*;
 
 
 /*
@@ -21,7 +22,9 @@ behavior Client {
     FileUtility inputScript;
 
     Vector fileServers = new Vector();
-    DirectoryService d;
+    DirectoryServer d;
+
+    HashMap fileBuilding;
 
 
     /* Your program's first input must be the path to the 
@@ -35,6 +38,7 @@ behavior Client {
         }
         // example input / printing / output
         inputScript = new FileUtility(args[0]);
+        fileBuilding = new HashMap();
         
         scanInput();
     }
@@ -49,10 +53,12 @@ behavior Client {
         String s = inputScript.nextLine();
         if (s == null) {
             return;
-        } else {
+        } 
+        else {
             String firstChar = s.substring(0,1);
+
             if (firstChar.equals("d")){ 
-                createDirectoryService(s);
+                createDirectoryServer(s);
             }
             else if (firstChar.equals("f")) { 
                 createFileServer(s);
@@ -67,35 +73,42 @@ behavior Client {
                 quit(s);
             }
 
-
-
             standardOutput <- println(s) @
             scanInput();
         }
         
     }
 
-    void createDirectoryService(String s) {
-        standardOutput <- println(s); 
+    void createDirectoryServer(String s) {
+        // standardOutput <- println(s); 
         String[] tokens = s.split(" ");
         String uan_str = tokens[1];
         String ual_str = tokens[2];
-        standardOutput <- println(uan_str);
-        standardOutput <- println(ual_str);
+        // standardOutput <- println(uan_str);
+        // standardOutput <- println(ual_str);
         standardOutput <- println("Create Directory Service Method"); 
-        new DirectoryServer(0) at (new UAN(uan_str), new UAL(ual_str));
-        d = (DirectoryServer) DirectoryServer.getReferenceByName(uan_str);
+        DirectoryServer d = new DirectoryServer(0) at (new UAN(uan_str), new UAL(ual_str));
+        // d  = (DirectoryServer) DirectoryServer.getReferenceByName(uan_str);
     }
     
-    void createFileService(String s) {
+    void createFileServer(String s) {
         String[] tokens = s.split(" ");
         String ds_uan_str = tokens[1];
         String uan_str = tokens[2];
         String ual_str = tokens[3];
-        fileServers.add(new FileServer() at (new UAN(uan_str), new UAL(ual_str)))
+        fileServers.add(new FileServer() at (new UAN(uan_str), new UAL(ual_str)));
         FileServer fs = (FileServer) FileServer.getReferenceByName(uan_str);
-        fs <- setDirectoryService(ds_uan_str);
-
+        standardOutput <- println("Creating File Server");
+        String done = "false";
+        fs <- setDirectoryServer(ds_uan_str, uan_str);
+        standardOutput <- println("Waiting");
+        try{
+            Thread.sleep(5000);
+        }catch (InterruptedException e){
+            standardOutput <- println("Error");
+        }
+        standardOutput <- println("Done Waiting");
+        
     }
 
 
@@ -103,9 +116,11 @@ behavior Client {
         String[] tokens = s.split(" ");
         String ds_uan_str = tokens[1];
         String filename = tokens[2];
-        StandardOutput <- println("Create Method");
+        standardOutput <- println("Create Method");
+        String contents = inputScript.load("input/" + filename); // fix path
+        int numBlocks = contents.length() / 64 + 1;
+        fileBuilding.put(filename, new Vector(numBlocks));
         DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(ds_uan_str);
-        contents = inputScript.load(filename); // fix path to be absolute
         d <- store(filename, contents);
     }
 
@@ -114,13 +129,26 @@ behavior Client {
         String ds_uan_str = tokens[1];
         String filename = tokens[2];
         DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(ds_uan_str);
-        Vector<String> chunks = d <- retrieve(filename);
+        d <- retrieve(filename) @ self <- receiveBlocks(token);
 
-        for (int i = 0; i < chunks.capacity(); i++){
-            FileServer fs = (FileServer) FileServer.getReferenceByName(chunks.elementAt(i));
-            text += fs <- retrieve(fileName + "_" + Integer.toString(i+1), i);
+        // save(filenameInDownloads, fileBuilding.get(filename).toString());
+
+    }
+
+    void receiveBlocks(String fileName, Vector blocks){
+        String text = "";
+
+        for (int i = 0; i < blocks.capacity(); i++){
+            String fs_uan = (String) blocks.elementAt(i);
+            FileServer fs = (FileServer) FileServer.getReferenceByName(fs_uan);
+            fs <- retrieve(fileName + "_" + Integer.toString(i+1), i) @ self <- receiveBlock(token);
         }
-        
+    }
+
+    void receiveBlock(String fileName, String blockText, int block){
+        Vector v = (Vector) fileBuilding.get(fileName);
+        v.setElementAt(blockText, block);
+
     }
 
     void quit(String s) {

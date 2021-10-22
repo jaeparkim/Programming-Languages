@@ -1,10 +1,4 @@
 #!/bin/bash
-cd src/
-rm *.class
-rm Client.java
-rm DirectoryServer.java
-rm FileServer.java
-cd ../
 
 # stage 1 compile
 java -cp "salsa1.1.6.jar:." salsac.SalsaCompiler src/*.salsa 
