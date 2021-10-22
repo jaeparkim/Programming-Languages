@@ -1,0 +1,46 @@
+module dcell;
+
+behavior CellTester {
+
+    void act( String[] args ) {
+      
+	if (args.length != 2){
+	    standardError <- println(
+		"Usage: salsa dcell.CellTester <UAN> <UAL>");
+	    return;
+	}
+	
+	Cell c = new Cell(0) at (new UAN(args[0]), new UAL(args[1]));
+	
+	standardOutput <- print( "Initial Value:" ) @
+	    c <- get() @ standardOutput <- println( token );
+    }
+}
+
+/** Use. e.g., as follows:
+
+1. Compile the code:
+
+% salsac dcell/*
+
+2. In a separate terminal, run the name server:
+
+% wwcns
+
+3. In a separate terminal, start a theater in directory where "dcell" resides:
+
+% cd <salsa-examples>
+% wwctheater
+Theater listening on: rmsp://192.168.1.207:4040/
+
+4. Run the cell service using UAL (rmsp://...) from previous output.
+
+% salsa dcell/CellTester uan://localhost:3030/c rmsp://192.168.1.207:4040/c
+Initial Value:0
+
+5. Run a cell client to get the current value:
+
+% salsa dcell/GetCellValue uan://localhost:3030/c 
+Cell Value:0
+
+ **/

@@ -1,0 +1,19 @@
+module dcell;
+
+behavior GetCellValue {
+    
+    void act( String[] args ) {
+	if (args.length != 1){
+	    standardOutput <- println(
+		"Usage: salsa dcell.GetCellValue <CellUAN>");
+	    return;
+	}
+	
+	Cell c = (Cell) Cell.getReferenceByName(args[0]);
+
+	standardOutput <- print("Cell Value:") @
+	    c <- get() @
+	    standardOutput <- println(token);
+    }
+}
+

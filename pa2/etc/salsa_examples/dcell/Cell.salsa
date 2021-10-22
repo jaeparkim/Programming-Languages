@@ -1,0 +1,20 @@
+module dcell;
+
+behavior Cell implements ActorService{
+
+    Object content;
+    
+    Cell(Object initialContent) { 
+	content = initialContent; 
+    }
+	
+    Object get() { 
+	standardOutput <- println ("Returning: "+content);
+	return content;
+    }
+    
+    void set(Object newContent) {
+	standardOutput <- println ("Setting: "+newContent);
+	content = newContent;
+    }
+}
