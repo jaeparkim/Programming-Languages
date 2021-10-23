@@ -26,7 +26,8 @@ behavior Client {
     DirectoryServer d;
 
     HashMap fileBuilding;
-
+    int saved = 0;
+    int total = 0;
 
     /* Your program's first input must be the path to the 
      * input file it will execute (e.g. input/simple.script).
@@ -38,6 +39,7 @@ behavior Client {
             return;
         }
         // example input / printing / output
+
 
         inputScript = new FileUtility(args[0]);
         fileBuilding = new HashMap();
@@ -56,7 +58,7 @@ behavior Client {
 
         if (s == null) {
             return;
-        } 
+        }
         else {
             String firstChar = s.substring(0,1);
 
@@ -78,7 +80,7 @@ behavior Client {
                 create(s);
             }
             else if (firstChar.equals("g")) { 
-                // get(s);
+                get(s);
             }
             else if (firstChar.equals("q")) { 
                 // quit(s);
@@ -128,7 +130,14 @@ behavior Client {
         String filepath = "./input/" + filename;
         String contents = inputScript.load(filepath);
         int numBlocks = contents.length() / 64 + 1; // fix this?
-        fileBuilding.put(filename, new Vector(numBlocks));
+        // System.out.println(numBlocks);
+        total = numBlocks;
+        Vector v = new Vector();
+        for(int i = 0; i < numBlocks; i++){
+            v.add("");
+        }
+        fileBuilding.put(filename, v);
+        System.out.println("Hey: " + ((Vector)fileBuilding.get(filename)).size());
         DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(new UAN(ds_uan_str));
         d <- store(filename, contents);
     }
@@ -138,26 +147,45 @@ behavior Client {
         String ds_uan_str = tokens[1];
         String filename = tokens[2];
         DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(new UAN(ds_uan_str));
-        d <- retrieve(filename) @ self <- receiveBlocks(token);
+        d <- retrieve(filename) @ receiveBlocks(token, filename) @ saveFile(token, filename);
+        saveFile(token, filename);
 
-        // save(filenameInDownloads, fileBuilding.get(filename).toString());
 
     }
 
-    void receiveBlocks(String fileName, Vector blocks){
-        String text = "";
-
+    int receiveBlocks(Vector blocks, String fileName){
+        // System.out.println("Blocks.size()" + Integer.toString(blocks.size()));
+        int blocksRetrieved = 0;
         for (int i = 0; i < blocks.size(); i++){
             String fs_uan = (String) blocks.elementAt(i);
+            System.out.println("I: " + Integer.toString(i) + " fs_uan: " + fs_uan);
             FileServer fs = (FileServer) FileServer.getReferenceByName(new UAN(fs_uan));
-            fs <- retrieve(fileName + "_" + Integer.toString(i+1), i) @ self <- receiveBlock(token);
+            fs <- retrieve("./server/" + fileName.replace(".txt", "") + "_" + Integer.toString(i+1) + ".txt") @ self <- receiveBlock(fileName, token, i);
+            blocksRetrieved++;
         }
+
+        return blocksRetrieved;
+
     }
 
     void receiveBlock(String fileName, String blockText, int block){
+        // System.out.println(blockText);
         Vector v = (Vector) fileBuilding.get(fileName);
+        System.out.println("block: " + Integer.toString(block) + "blockText" + blockText);
         v.setElementAt(blockText, block);
+        saved++;
 
+    }
+
+    void saveFile(int receieved, String filename){
+        System.out.println("Saving file");
+        String filePath = "./downloads/" + filename;
+        Vector builder = (Vector) fileBuilding.get(filename);
+        String text = "";
+        for(int i = 0; i < builder.size(); i++){
+            text = text + (String) builder.elementAt(i);
+        }
+        inputScript.save(filePath, text);
     }
 
     void quit(String s) {

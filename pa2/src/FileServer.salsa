@@ -43,8 +43,16 @@ behavior FileServer {
     /* Retrieve some file block, possibly with order information */
     /* You may pass and return any data you need. */
     String retrieve(String fileName) {
-      Scanner in = new Scanner(fileName);
-      return in.nextLine();
+      System.out.println("FILENAME: " + fileName);
+      Scanner in = null;
+      try{
+        in = new Scanner(new File(fileName));
+      }catch(Exception e){
+        standardOutput <- println(e);
+      }
+      String block = in.nextLine();
+      System.out.println("BLOCK: " + block);
+      return block;
     }
 
     /*

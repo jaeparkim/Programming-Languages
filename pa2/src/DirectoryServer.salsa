@@ -69,7 +69,7 @@ behavior DirectoryServer {
         FileServer fs = (FileServer) FileServer.getReferenceByName(fs_uan);
 
         String _fileName = fileName.replace(".txt", "");
-        fs <- store("./servers/" + _fileName + "_" + Integer.toString(i+1) + ".txt", block);
+        fs <- store("./server/" + _fileName + "_" + Integer.toString(i+1) + ".txt", block);
       }
     }
 
@@ -79,7 +79,7 @@ behavior DirectoryServer {
     Vector retrieve(String fileName) {
       Vector blocks = (Vector) metaData.get(fileName);
       
-      return metaData;        
+      return blocks;        
     }
 
     void newFileServer(String fs_uan_str){

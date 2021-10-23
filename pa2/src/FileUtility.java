@@ -76,7 +76,7 @@ class FileUtility {
 	      writer.write(contents);
 	      writer.close();
 	    } catch (IOException ioe){
-	      System.err.println(ioe.getMessage());
+	      System.err.println(ioe.getMessage() + "This is where it crashed?");
 	    }
     }
 
