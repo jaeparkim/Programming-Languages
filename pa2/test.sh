@@ -18,7 +18,7 @@ java -cp "salsa1.1.6.jar:." wwc.naming.WWCNamingServer -p 3030 > downloads/namin
 server=$!
 java -cp "salsa1.1.6.jar:." wwc.messaging.Theater 4040 > downloads/theater1.txt &
 theater1=$!
-java -cp "salsa1.1.6.jar:." wwc.messaging.Theater 4041 > downloads/theater2.txt &
+java -cp "salsa1.1.6.jar:." wwc.messaging.Theater 4041 > downloads/theater2.txt&
 theater2=$!
 java -cp "salsa1.1.6.jar:." wwc.messaging.Theater 4042 > downloads/theater3.txt &
 theater3=$!

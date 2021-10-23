@@ -53,19 +53,26 @@ behavior Client {
      */
     void scanInput() {
         String s = inputScript.nextLine();
-        System.out.println("________________________");
-        System.out.println(s);
+
         if (s == null) {
             return;
         } 
         else {
             String firstChar = s.substring(0,1);
 
+            
             if (firstChar.equals("d")){ 
                 createDirectoryServer(s);
             }
             else if (firstChar.equals("f")) { 
                 createFileServer(s);
+                /*
+                try {
+                    Thread.sleep(5000);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+                */
             }
             else if (firstChar.equals("c")) { 
                 create(s);
@@ -76,8 +83,10 @@ behavior Client {
             else if (firstChar.equals("q")) { 
                 // quit(s);
             }
+            
+            System.out.println("________________________");
+            System.out.println(s);
 
-            standardOutput <- println(s) @
             scanInput();
         }
         
@@ -90,7 +99,6 @@ behavior Client {
         String ual_str = tokens[2];
         standardOutput <- println("Create Directory Service Method"); 
         DirectoryServer d = new DirectoryServer(0) at (new UAN(uan_str), new UAL(ual_str));
-        // d  = (DirectoryServer) DirectoryServer.getReferenceByName(uan_str);
     }
     
     void createFileServer(String s) {
@@ -99,27 +107,15 @@ behavior Client {
         String uan_str = tokens[2];
         String ual_str = tokens[3];
 
-        /*
-        System.out.println(ds_uan_str);
-        System.out.println("------------------------------------");
-        System.out.println(uan_str);
-        System.out.println("------------------------------------");
-        System.out.println(ual_str);
-        */
-
-        fileServers.add(new FileServer() at (new UAN(uan_str), new UAL(ual_str)));
+        DirectoryServer d  = (DirectoryServer) DirectoryServer.getReferenceByName(ds_uan_str);
         
+        d <- newFileServer(uan_str);
+        fileServers.add(new FileServer(ds_uan_str, uan_str) at (new UAN(uan_str), new UAL(ual_str)));
+        
+        standardOutput <- println("Waiting");
         FileServer fs = (FileServer) FileServer.getReferenceByName(new UAN(uan_str));
         standardOutput <- println("Creating File Server");
-        try{
-            fs <- setDirectoryServer(ds_uan_str, uan_str);
-            standardOutput <- println("Waiting");
-            // Thread.sleep(5000);
-        } catch (Exception e) {
-            standardOutput <- println("Error!!!!!!!!");
-        }
         standardOutput <- println("Done Waiting");
-        
     }
 
 
@@ -130,8 +126,8 @@ behavior Client {
 
         standardOutput <- println("Create Method");
         String filepath = "./input/" + filename;
-        String contents = inputScript.load(filepath); // fix path
-        int numBlocks = contents.length() / 64 + 1;
+        String contents = inputScript.load(filepath);
+        int numBlocks = contents.length() / 64 + 1; // fix this?
         fileBuilding.put(filename, new Vector(numBlocks));
         DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(new UAN(ds_uan_str));
         d <- store(filename, contents);
@@ -151,7 +147,7 @@ behavior Client {
     void receiveBlocks(String fileName, Vector blocks){
         String text = "";
 
-        for (int i = 0; i < blocks.capacity(); i++){
+        for (int i = 0; i < blocks.size(); i++){
             String fs_uan = (String) blocks.elementAt(i);
             FileServer fs = (FileServer) FileServer.getReferenceByName(new UAN(fs_uan));
             fs <- retrieve(fileName + "_" + Integer.toString(i+1), i) @ self <- receiveBlock(token);

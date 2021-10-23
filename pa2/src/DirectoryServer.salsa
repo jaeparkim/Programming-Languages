@@ -49,24 +49,27 @@ behavior DirectoryServer {
       int fileNum = (content.length() / 64) + 1;
       int fsNum = fs.size();
 
-      System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+      System.out.println("create------------------------------");
       System.out.println(fsNum);
 
       for (int i = 0; i < fileNum; i++){
         standardOutput <- println("Storing " + fileName + " block " + Integer.toString(i + 1) + " in fs: " + fs.elementAt(i % fs.size()));
         String block = "";
 
-        if(i == fileNum) {
+        if(i == fileNum - 1) {
           block = content.substring(i * 64);
         }
         else {
-          String chunk = content.substring(i*64, (i+1)*64);
+          block = content.substring(i*64, (i+1)*64);
         }
         Vector v = (Vector) metaData.get(fileName);
         String fs_uan = (String) fs.elementAt(i % fs.size());
+
         v.add(fs_uan);
         FileServer fs = (FileServer) FileServer.getReferenceByName(fs_uan);
-        fs <- store(fileName + "_" + Integer.toString(i+1), block);
+
+        String _fileName = fileName.replace(".txt", "");
+        fs <- store("./servers/" + _fileName + "_" + Integer.toString(i+1) + ".txt", block);
       }
     }
 
@@ -76,7 +79,7 @@ behavior DirectoryServer {
     Vector retrieve(String fileName) {
       Vector blocks = (Vector) metaData.get(fileName);
       
-      return blocks;        
+      return metaData;        
     }
 
     void newFileServer(String fs_uan_str){
@@ -84,8 +87,8 @@ behavior DirectoryServer {
       if(fs.isEmpty()) {
         fs.add(fs_uan_str);
 
-        System.out.println("HEREEEEEEEEEEEEEEEEEEEEEEEE");
-        System.out.println(fs);
+        System.out.println("createDirectoryServer---------------------");
+        System.out.println(fs.size());
 
       }
       else {

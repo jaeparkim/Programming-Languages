@@ -11,11 +11,16 @@ import java.util.*;
   and are encouraged to add helper functions.
 
 */
-behavior FileServer implements ActorService {
+behavior FileServer {
 
 
     int blockSize = 64;
     DirectoryServer ds;
+
+    FileServer(String ds_uan_str, String uan_str) {
+      System.out.println("CONSTRUCTOR");
+      // setDirectoryServer(ds_uan_str, uan_str);
+    }
 
 
     /* Save some data to file
@@ -42,9 +47,9 @@ behavior FileServer implements ActorService {
       return in.nextLine();
     }
 
-    String setDirectoryServer(String ds_uan_str, String fs_uan_str) {
+    /*
+    void setDirectoryServer(String ds_uan_str, String fs_uan_str) {
       DirectoryServer directoryServer = (DirectoryServer) DirectoryServer.getReferenceByName(new UAN(ds_uan_str));
       directoryServer <- newFileServer(fs_uan_str);
-      return "true";
-    }
+    } */
 }

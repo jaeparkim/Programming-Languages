@@ -6,4 +6,5 @@ rm FileServer.java
 cd ../
 
 rm -rf downloads/*
-rm -rf server/*
+rm -rf servers/*
+
