@@ -11,7 +11,7 @@ import java.util.*;
   and are encouraged to add helper functions.
 
 */
-behavior FileServer {
+behavior FileServer implements ActorService {
 
 
     int blockSize = 64;
@@ -43,8 +43,8 @@ behavior FileServer {
     }
 
     String setDirectoryServer(String ds_uan_str, String fs_uan_str) {
-      DirectoryServer ds = (DirectoryServer) DirectoryServer.getReferenceByName(ds_uan_str);
-      ds <- alertNewFileServer(fs_uan_str);
+      DirectoryServer directoryServer = (DirectoryServer) DirectoryServer.getReferenceByName(new UAN(ds_uan_str));
+      directoryServer <- newFileServer(fs_uan_str);
       return "true";
     }
 }

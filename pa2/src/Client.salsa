@@ -38,9 +38,6 @@ behavior Client {
             return;
         }
         // example input / printing / output
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$");
-        System.out.println(args[0]);
-
 
         inputScript = new FileUtility(args[0]);
         fileBuilding = new HashMap();
@@ -74,10 +71,10 @@ behavior Client {
                 create(s);
             }
             else if (firstChar.equals("g")) { 
-                get(s);
+                // get(s);
             }
             else if (firstChar.equals("q")) { 
-                quit(s);
+                // quit(s);
             }
 
             standardOutput <- println(s) @
@@ -91,8 +88,6 @@ behavior Client {
         String[] tokens = s.split(" ");
         String uan_str = tokens[1];
         String ual_str = tokens[2];
-        // standardOutput <- println(uan_str);
-        // standardOutput <- println(ual_str);
         standardOutput <- println("Create Directory Service Method"); 
         DirectoryServer d = new DirectoryServer(0) at (new UAN(uan_str), new UAL(ual_str));
         // d  = (DirectoryServer) DirectoryServer.getReferenceByName(uan_str);
@@ -103,8 +98,18 @@ behavior Client {
         String ds_uan_str = tokens[1];
         String uan_str = tokens[2];
         String ual_str = tokens[3];
+
+        /*
+        System.out.println(ds_uan_str);
+        System.out.println("------------------------------------");
+        System.out.println(uan_str);
+        System.out.println("------------------------------------");
+        System.out.println(ual_str);
+        */
+
         fileServers.add(new FileServer() at (new UAN(uan_str), new UAL(ual_str)));
-        FileServer fs = (FileServer) FileServer.getReferenceByName(uan_str);
+        
+        FileServer fs = (FileServer) FileServer.getReferenceByName(new UAN(uan_str));
         standardOutput <- println("Creating File Server");
         try{
             fs <- setDirectoryServer(ds_uan_str, uan_str);
@@ -122,11 +127,13 @@ behavior Client {
         String[] tokens = s.split(" ");
         String ds_uan_str = tokens[1];
         String filename = tokens[2];
+
         standardOutput <- println("Create Method");
-        String contents = inputScript.load("input/" + filename); // fix path
+        String filepath = "./input/" + filename;
+        String contents = inputScript.load(filepath); // fix path
         int numBlocks = contents.length() / 64 + 1;
         fileBuilding.put(filename, new Vector(numBlocks));
-        DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(ds_uan_str);
+        DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(new UAN(ds_uan_str));
         d <- store(filename, contents);
     }
 
@@ -134,7 +141,7 @@ behavior Client {
         String[] tokens = s.split(" ");
         String ds_uan_str = tokens[1];
         String filename = tokens[2];
-        DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(ds_uan_str);
+        DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(new UAN(ds_uan_str));
         d <- retrieve(filename) @ self <- receiveBlocks(token);
 
         // save(filenameInDownloads, fileBuilding.get(filename).toString());
@@ -146,7 +153,7 @@ behavior Client {
 
         for (int i = 0; i < blocks.capacity(); i++){
             String fs_uan = (String) blocks.elementAt(i);
-            FileServer fs = (FileServer) FileServer.getReferenceByName(fs_uan);
+            FileServer fs = (FileServer) FileServer.getReferenceByName(new UAN(fs_uan));
             fs <- retrieve(fileName + "_" + Integer.toString(i+1), i) @ self <- receiveBlock(token);
         }
     }

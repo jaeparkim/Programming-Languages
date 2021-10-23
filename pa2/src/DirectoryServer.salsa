@@ -48,7 +48,10 @@ behavior DirectoryServer {
       metaData.put(fileName, new Vector());
       int fileNum = (content.length() / 64) + 1;
       int fsNum = fs.size();
-      standardOutput <- println(Integer.toString(fsNum));
+
+      System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+      System.out.println(fsNum);
+
       for (int i = 0; i < fileNum; i++){
         standardOutput <- println("Storing " + fileName + " block " + Integer.toString(i + 1) + " in fs: " + fs.elementAt(i % fs.size()));
         String block = "";
@@ -80,11 +83,15 @@ behavior DirectoryServer {
       standardOutput <- println("New File Server Created!!!");
       if(fs.isEmpty()) {
         fs.add(fs_uan_str);
+
+        System.out.println("HEREEEEEEEEEEEEEEEEEEEEEEEE");
+        System.out.println(fs);
+
       }
       else {
-        for(int i = 0; i < fs.capacity(); i++){
+        for(int i = 0; i < fs.size(); i++){
           if(fs_uan_str.compareToIgnoreCase((String) fs.elementAt(i)) < 0) {
-            fs.insertElementAt(fs_uan_str, i);
+            fs.insertElementAt( (String) fs_uan_str, i);
           }
         }
       }
