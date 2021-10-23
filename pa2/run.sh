@@ -1,13 +1,15 @@
 #!/bin/bash
 
+# ./delete.sh
+
 # stage 1 compile
 java -cp "salsa1.1.6.jar:." salsac.SalsaCompiler src/*.salsa 
 # stage 2 compile
 javac -classpath "salsa1.1.6.jar:." src/*.java 
 
 #################################################################
-rm -f "downloads/*"
-rm -f "server/*"
+rm -f downloads/*
+rm -f server/*
 
 if [ "$1" == "" ]
 then

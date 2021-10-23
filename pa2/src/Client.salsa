@@ -1,4 +1,5 @@
 module src;
+
 import java.util.*;
 import src.FileUtility;
 import java.io.*;
@@ -37,6 +38,10 @@ behavior Client {
             return;
         }
         // example input / printing / output
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$");
+        System.out.println(args[0]);
+
+
         inputScript = new FileUtility(args[0]);
         fileBuilding = new HashMap();
         
@@ -51,6 +56,8 @@ behavior Client {
      */
     void scanInput() {
         String s = inputScript.nextLine();
+        System.out.println("________________________");
+        System.out.println(s);
         if (s == null) {
             return;
         } 
@@ -99,13 +106,12 @@ behavior Client {
         fileServers.add(new FileServer() at (new UAN(uan_str), new UAL(ual_str)));
         FileServer fs = (FileServer) FileServer.getReferenceByName(uan_str);
         standardOutput <- println("Creating File Server");
-        String done = "false";
-        fs <- setDirectoryServer(ds_uan_str, uan_str);
-        standardOutput <- println("Waiting");
         try{
-            Thread.sleep(5000);
-        }catch (InterruptedException e){
-            standardOutput <- println("Error");
+            fs <- setDirectoryServer(ds_uan_str, uan_str);
+            standardOutput <- println("Waiting");
+            // Thread.sleep(5000);
+        } catch (Exception e) {
+            standardOutput <- println("Error!!!!!!!!");
         }
         standardOutput <- println("Done Waiting");
         

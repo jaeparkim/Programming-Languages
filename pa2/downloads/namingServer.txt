@@ -1,1 +1,20 @@
 WWCNamingServer listening on port: 3030
+Bind /ds to rmsp://127.0.1.1:39627/UAL/1634955661823/13, from /127.0.0.1:39964
+Query /ds Get rmsp://127.0.1.1:39627/UAL/1634955661823/13, from /127.0.0.1:39964
+Bind /fs1 to rmsp://127.0.1.1:39627/UAL/1634955661823/22, from /127.0.0.1:39964
+Query /fs1 Get rmsp://127.0.1.1:39627/UAL/1634955661823/22, from /127.0.0.1:39964
+Query /fs1 Get rmsp://127.0.1.1:39627/UAL/1634955661823/22, from /127.0.0.1:39964
+Query /ds Get rmsp://127.0.1.1:39627/UAL/1634955661823/13, from /127.0.0.1:39964
+Query /ds Get rmsp://127.0.1.1:39627/UAL/1634955661823/13, from /127.0.0.1:39964
+Bind /ds to rmsp://127.0.1.1:4040, from /127.0.0.1:39970
+Query /ds Get rmsp://127.0.1.1:4040, from /127.0.0.1:39964
+Bind /fs1 to rmsp://127.0.1.1:4041, from /127.0.0.1:39974
+Query /fs1 Get rmsp://127.0.1.1:4041, from /127.0.0.1:39964
+Query /ds Get rmsp://127.0.1.1:4040, from /127.0.0.1:39974
+Query /ds Get rmsp://127.0.1.1:4040, from /127.0.0.1:39974
+Query /ds Get rmsp://127.0.1.1:4040, from /127.0.0.1:39974
+Query /fs1 Get rmsp://127.0.1.1:4041, from /127.0.0.1:39970
+Query /fs1 Get rmsp://127.0.1.1:4041, from /127.0.0.1:39970
+Delete /ds, from /127.0.0.1:39970
+Delete /fs1, from /127.0.0.1:39974
+Query /ds Get null, from /127.0.0.1:39970
