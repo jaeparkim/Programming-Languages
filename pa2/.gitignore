@@ -2,3 +2,7 @@
 *.java
 
 !src/FileUtility.java
+
+downloads/*
+servers/*
+
