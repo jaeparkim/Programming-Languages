@@ -53,6 +53,9 @@ behavior FileServer {
       String block = "";
       while(in.hasNextLine()){
         block += in.nextLine();
+        if(in.hasNextLine()){
+          block += "\n";
+        }
       }
       System.out.println("BLOCK: " + block);
       return block;

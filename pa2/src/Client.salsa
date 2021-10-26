@@ -68,13 +68,6 @@ behavior Client {
             }
             else if (firstChar.equals("f")) { 
                 createFileServer(s);
-                /*
-                try {
-                    Thread.sleep(5000);
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-                */
             }
             else if (firstChar.equals("c")) { 
                 create(s);
@@ -147,7 +140,7 @@ behavior Client {
         String ds_uan_str = tokens[1];
         String filename = tokens[2];
         DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(new UAN(ds_uan_str));
-        d <- retrieve(filename) @ self <- receiveBlocks(token, filename) @ self <- saveFile(filename);
+        d <- retrieve(filename) @ self <- receiveBlocks(token, filename);
         
         
         
@@ -163,19 +156,17 @@ behavior Client {
 
     }
 
-    int receiveBlocks(Vector blocks, String fileName){
+    void receiveBlocks(Vector blocks, String fileName){
         // System.out.println("Blocks.size()" + Integer.toString(blocks.size()));
         int blocksRetrieved = 0;
-        for (int i = 0; i < blocks.size(); i++){
-            String fs_uan = (String) blocks.elementAt(i);
-            System.out.println("I: " + Integer.toString(i) + " fs_uan: " + fs_uan);
-            FileServer fs = (FileServer) FileServer.getReferenceByName(new UAN(fs_uan));
-            fs <- retrieve("./server/" + fileName.replace(".txt", "") + "_" + Integer.toString(i+1) + ".txt") @ self <- receiveBlock(fileName, token, i);
-            blocksRetrieved++;
-        }
-
-        return blocksRetrieved;
-
+        join{
+            for (int i = 0; i < blocks.size(); i++){
+                String fs_uan = (String) blocks.elementAt(i);
+                System.out.println("I: " + Integer.toString(i) + " fs_uan: " + fs_uan);
+                FileServer fs = (FileServer) FileServer.getReferenceByName(new UAN(fs_uan));
+                fs <- retrieve("./server/" + fileName.replace(".txt", "") + "_" + Integer.toString(i+1) + ".txt") @ self <- receiveBlock(fileName, token, i);
+            }
+        } @ self <- saveFile(fileName);                                                                                                        
     }
 
     void receiveBlock(String fileName, String blockText, int block){
@@ -183,8 +174,6 @@ behavior Client {
         Vector v = (Vector) fileBuilding.get(fileName);
         System.out.println("block: " + Integer.toString(block) + "blockText" + blockText);
         v.setElementAt(blockText, block);
-        saved++;
-
     }
 
     void saveFile(String filename){
@@ -195,6 +184,7 @@ behavior Client {
         for(int i = 0; i < builder.size(); i++){
             text = text + (String) builder.elementAt(i);
         }
+        text = text + "\n";
 
         inputScript.save(filePath, text);
     }

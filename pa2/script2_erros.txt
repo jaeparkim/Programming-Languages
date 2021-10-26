@@ -1,0 +1,82 @@
+
+Salsa Compiler Version 1.1.6:  Reading from file src/Client.salsa . . .
+Salsa Compiler Version 1.1.6:  Salsa program parsed successfully.
+Salsa Compiler Version 1.1.6:  Salsa program compiled successfully.
+
+Salsa Compiler Version 1.1.6:  Reading from file src/DirectoryServer.salsa . . .
+Salsa Compiler Version 1.1.6:  Salsa program parsed successfully.
+Salsa Compiler Version 1.1.6:  Salsa program compiled successfully.
+
+Salsa Compiler Version 1.1.6:  Reading from file src/FileServer.salsa . . .
+Salsa Compiler Version 1.1.6:  Salsa program parsed successfully.
+Salsa Compiler Version 1.1.6:  Salsa program compiled successfully.
+running
+Waiting 5 seconds.
+
+________________________
+d uan://localhost:3030/ds rmsp://localhost:4040 
+Create Directory Service Method
+________________________
+f uan://localhost:3030/ds uan://localhost:3030/fs1 rmsp://localhost:4041
+Waiting
+Creating File Server
+Done Waiting
+________________________
+f uan://localhost:3030/ds uan://localhost:3030/fs2 rmsp://localhost:4042
+Waiting
+Creating File Server
+Done Waiting
+________________________
+f uan://localhost:3030/ds uan://localhost:3030/fs3 rmsp://localhost:4043
+Waiting
+Creating File Server
+Done Waiting
+________________________
+c uan://localhost:3030/ds a.txt
+Hey: 4
+Create Method
+________________________
+c uan://localhost:3030/ds b.txt
+Hey: 4
+Create Method
+________________________
+g uan://localhost:3030/ds a.txt
+________________________
+g uan://localhost:3030/ds b.txt
+________________________
+q uan://localhost:3030/ds
+I: 0 fs_uan: uan://localhost:3030/fs1
+I: 1 fs_uan: uan://localhost:3030/fs1
+I: 2 fs_uan: uan://localhost:3030/fs1
+I: 3 fs_uan: uan://localhost:3030/fs1
+I: 0 fs_uan: uan://localhost:3030/fs1
+I: 1 fs_uan: uan://localhost:3030/fs1
+I: 2 fs_uan: uan://localhost:3030/fs1
+I: 3 fs_uan: uan://localhost:3030/fs1
+block: 0blockTextThis is a multiline test file
+the number of characters contained
+block: 1blockText here is not evenly
+divisible by 64. we may ev
+en have some word
+block: 2blockTexts that are cut off by a new l
+ine. If your program is coded corr
+block: 3blockTextectly however, th
+is shouldn't be a prob
+lem
+Saving file
+block: 0blockTextCoMWss1sHFwYxfb6bvJ0tqKkPVwNVlE24aZ19Btnr1v34SwBU2w0IEbUo2gtrqj9
+block: 1blockTextgMdG7MTySpq207jDQne9L9H5WWIIMdtJ3swqOapVI3nLI8zhHiAJenNUkNxFUlM0
+block: 2blockTextljJuu3Jea5MVRYKFo3SwFf0RlviyO5I9u3XbXdP5JFFRJmqRlEdoGeopbr7FeIyA
+block: 3blockTextSJv5GU1yEEVrAeFs2bwimcAcuRhVQw4gUBgneV1CNJbfE0eSLUb7xaf8EUiTbh0
+Saving file
+
+Execution terminated.
+
+a: 0
+a passed.
+b: 0
+b passed.
+ 
+Pressing enter will delete the output files.
+Check their contents now.
+ 
