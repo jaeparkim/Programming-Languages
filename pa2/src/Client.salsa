@@ -147,9 +147,25 @@ behavior Client {
         String ds_uan_str = tokens[1];
         String filename = tokens[2];
         DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(new UAN(ds_uan_str));
-        d <- retrieve(filename) @ receiveBlocks(token, filename) @ saveFile(token, filename);
-        saveFile(token, filename);
+        d <- retrieve(filename);
+        join{
+            for int i = 0; i < token.size(); i++){
+                FileServer fs = (FileServer) FileServer.getReferenceByName(new UAN(fs_uan));
+                fs <- retrieve("./server/" + filename.replace(".txt","_") + Integer.toString(i+1) + ".txt") @ self <- recieveBlock(filename, token, i);
+            }
+        } @ self <- saveFile(filename);
+        
+        
+        
+        
+        //self <- receiveBlocks(token, filename) @ self <- saveFile(token, filename);
 
+        // try{
+        //     Thread.sleep(5000);
+        // }catch(Exception e){
+        //     standardOutput <- println(e);
+        // }
+        // saveFile(filename);
 
     }
 
@@ -177,7 +193,7 @@ behavior Client {
 
     }
 
-    void saveFile(int receieved, String filename){
+    void saveFile(String filename){
         System.out.println("Saving file");
         String filePath = "./downloads/" + filename;
         Vector builder = (Vector) fileBuilding.get(filename);
@@ -185,6 +201,7 @@ behavior Client {
         for(int i = 0; i < builder.size(); i++){
             text = text + (String) builder.elementAt(i);
         }
+
         inputScript.save(filePath, text);
     }
 
