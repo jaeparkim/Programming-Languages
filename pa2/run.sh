@@ -34,6 +34,12 @@ java -cp "salsa1.1.6.jar:." wwc.messaging.Theater 4041 > downloads/theater2.txt 
 theater2=$!
 java -cp "salsa1.1.6.jar:." wwc.messaging.Theater 4042 > downloads/theater3.txt &
 theater3=$!
+java -cp "salsa1.1.6.jar:." wwc.messaging.Theater 4043 > downloads/theater4.txt &
+theater4=$!
+java -cp "salsa1.1.6.jar:." wwc.messaging.Theater 4044 > downloads/theater5.txt &
+theater5=$!
+java -cp "salsa1.1.6.jar:." wwc.messaging.Theater 4045 > downloads/theater6.txt &
+theater6=$!
 java -cp "salsa1.1.6.jar:." src.Client $1 &
 client=$!
 
@@ -48,6 +54,9 @@ kill $server 2> /dev/null
 kill $theater1 2> /dev/null
 kill $theater2 2> /dev/null
 kill $theater3 2> /dev/null
+kill $theater4 2> /dev/null
+kill $theater5 2> /dev/null
+kill $theater6 2> /dev/null
 kill $client 2> /dev/null
 
 echo 

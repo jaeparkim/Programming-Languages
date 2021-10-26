@@ -16,9 +16,11 @@ behavior FileServer {
 
     int blockSize = 64;
     DirectoryServer ds;
+    String uan;
 
     FileServer(String ds_uan_str, String uan_str) {
       System.out.println("CONSTRUCTOR");
+      uan = uan_str;
       // setDirectoryServer(ds_uan_str, uan_str);
     }
 
@@ -31,6 +33,8 @@ behavior FileServer {
     /* You may pass and return any data you need. */
     void store(String fileName, String contents) {
       try{
+        // String path = uan.substring(uan.lastIndexOf("/")+1) + "/" + fileName;
+        standardOutput <- println("STORING: " + fileName);
         FileWriter f = (FileWriter) new FileWriter(fileName);
         f.write(contents);
         f.close();

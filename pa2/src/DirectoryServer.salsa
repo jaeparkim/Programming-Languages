@@ -49,7 +49,7 @@ behavior DirectoryServer {
       int fileNum = (content.length() / 64) + 1;
       int fsNum = fs.size();
 
-      System.out.println("create------------------------------");
+      System.out.println("create------------------------------" + fileName);
       System.out.println(fsNum);
 
       for (int i = 0; i < fileNum; i++){
@@ -64,12 +64,14 @@ behavior DirectoryServer {
         }
         Vector v = (Vector) metaData.get(fileName);
         String fs_uan = (String) fs.elementAt(i % fs.size());
-
+        // standardOutput<-println("BLAH BLAH BLAH " + fs_uan);
         v.add(fs_uan);
         FileServer fs = (FileServer) FileServer.getReferenceByName(fs_uan);
 
         String _fileName = fileName.replace(".txt", "");
-        fs <- store("./server/" + _fileName + "_" + Integer.toString(i+1) + ".txt", block);
+        String folder = fs_uan.substring(fs_uan.lastIndexOf("/")+1) + "/";
+        // standardOutput<-println(folder);
+        fs <- store("./server/" + folder + _fileName + "_" + Integer.toString(i+1) + ".txt", block);
       }
     }
 
@@ -92,11 +94,17 @@ behavior DirectoryServer {
 
       }
       else {
-        for(int i = 0; i < fs.size(); i++){
-          if(fs_uan_str.compareToIgnoreCase((String) fs.elementAt(i)) < 0) {
-            fs.insertElementAt( (String) fs_uan_str, i);
-          }
-        }
+        fs.add((String) fs_uan_str);
+        Collections.sort(fs);
+        // standardOutput <- println(fs);
+        // for(int i = 0; i < fs.size(); i++){
+
+        //   if(fs_uan_str.compareToIgnoreCase((String) fs.elementAt(i)) < 0) {
+        //     fs.insertElementAt( (String) fs_uan_str, i);
+        //     break;
+        //   }
+        // }
+        
       }
     }
 }

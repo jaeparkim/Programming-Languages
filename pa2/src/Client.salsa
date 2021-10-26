@@ -29,6 +29,8 @@ behavior Client {
     int saved = 0;
     int total = 0;
 
+    int counter = 0;
+
     /* Your program's first input must be the path to the 
      * input file it will execute (e.g. input/simple.script).
      * Additional arguments will not be passed for tests.
@@ -106,6 +108,7 @@ behavior Client {
         
         d <- newFileServer(uan_str);
         fileServers.add(new FileServer(ds_uan_str, uan_str) at (new UAN(uan_str), new UAL(ual_str)));
+        inputScript.mkdir("server/" + uan_str.substring(uan_str.lastIndexOf("/")+1));
         
         standardOutput <- println("Waiting");
         FileServer fs = (FileServer) FileServer.getReferenceByName(new UAN(uan_str));
@@ -132,7 +135,7 @@ behavior Client {
         fileBuilding.put(filename, v);
         System.out.println("Hey: " + ((Vector)fileBuilding.get(filename)).size());
         DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(new UAN(ds_uan_str));
-        d <- store(filename, contents);
+        d <- store(filename, contents);// @ counter = counter+1;// @ standardOutput <- println("COUNTER +: " + Integer.toString(counter));
     }
 
     void get(String s) {
@@ -153,6 +156,7 @@ behavior Client {
         //     standardOutput <- println(e);
         // }
         // saveFile(filename);
+        // return "Done";
 
     }
 
@@ -164,9 +168,10 @@ behavior Client {
                 String fs_uan = (String) blocks.elementAt(i);
                 System.out.println("I: " + Integer.toString(i) + " fs_uan: " + fs_uan);
                 FileServer fs = (FileServer) FileServer.getReferenceByName(new UAN(fs_uan));
-                fs <- retrieve("./server/" + fileName.replace(".txt", "") + "_" + Integer.toString(i+1) + ".txt") @ self <- receiveBlock(fileName, token, i);
+                String folder = fs_uan.substring(fs_uan.lastIndexOf("/")+1) + "/";
+                fs <- retrieve("./server/" + folder + fileName.replace(".txt", "") + "_" + Integer.toString(i+1) + ".txt") @ self <- receiveBlock(fileName, token, i);
             }
-        } @ self <- saveFile(fileName);                                                                                                        
+        } @ self <- saveFile(fileName);// @ counter = counter-1;// @ standardOutput <- println("COUNTER -: " + Integer.toString(counter));                                                                                                        
     }
 
     void receiveBlock(String fileName, String blockText, int block){
@@ -187,9 +192,14 @@ behavior Client {
         text = text + "\n";
 
         inputScript.save(filePath, text);
+        // counter--;
     }
 
     void quit(String s) {
+        while(counter != 0){
+
+        }
+        fileServers = null;
         System.out.println("Quit Method");
     }
 }
