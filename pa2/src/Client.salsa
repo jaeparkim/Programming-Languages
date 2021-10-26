@@ -147,13 +147,7 @@ behavior Client {
         String ds_uan_str = tokens[1];
         String filename = tokens[2];
         DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(new UAN(ds_uan_str));
-        d <- retrieve(filename);
-        join{
-            for int i = 0; i < token.size(); i++){
-                FileServer fs = (FileServer) FileServer.getReferenceByName(new UAN(fs_uan));
-                fs <- retrieve("./server/" + filename.replace(".txt","_") + Integer.toString(i+1) + ".txt") @ self <- recieveBlock(filename, token, i);
-            }
-        } @ self <- saveFile(filename);
+        d <- retrieve(filename) @ self <- receiveBlocks(token, filename) @ self <- saveFile(filename);
         
         
         
