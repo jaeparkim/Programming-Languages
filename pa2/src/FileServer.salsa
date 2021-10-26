@@ -50,7 +50,10 @@ behavior FileServer {
       }catch(Exception e){
         standardOutput <- println(e);
       }
-      String block = in.nextLine();
+      String block = "";
+      while(in.hasNextLine()){
+        block += in.nextLine();
+      }
       System.out.println("BLOCK: " + block);
       return block;
     }
