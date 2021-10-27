@@ -78,7 +78,7 @@ behavior Client {
                 get(s);
             }
             else if (firstChar.equals("q")) { 
-                // quit(s);
+                quit(s);
             }
             
             System.out.println("________________________");
@@ -104,7 +104,7 @@ behavior Client {
         String uan_str = tokens[2];
         String ual_str = tokens[3];
 
-        DirectoryServer d  = (DirectoryServer) DirectoryServer.getReferenceByName(ds_uan_str);
+        d  = (DirectoryServer) DirectoryServer.getReferenceByName(ds_uan_str);
         
         d <- newFileServer(uan_str);
         fileServers.add(new FileServer(ds_uan_str, uan_str) at (new UAN(uan_str), new UAL(ual_str)));
@@ -196,10 +196,12 @@ behavior Client {
     }
 
     void quit(String s) {
-        while(counter != 0){
+        // while(counter != 0){
 
-        }
+        // }
+        // d = null;
         fileServers = null;
+        d = null;
         System.out.println("Quit Method");
     }
 }
