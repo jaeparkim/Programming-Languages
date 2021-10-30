@@ -65,9 +65,4 @@ behavior FileServer {
       return block;
     }
 
-    /*
-    void setDirectoryServer(String ds_uan_str, String fs_uan_str) {
-      DirectoryServer directoryServer = (DirectoryServer) DirectoryServer.getReferenceByName(new UAN(ds_uan_str));
-      directoryServer <- newFileServer(fs_uan_str);
-    } */
 }

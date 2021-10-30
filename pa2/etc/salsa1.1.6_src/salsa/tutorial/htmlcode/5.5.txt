@@ -1,2 +1,0 @@
-ActorReference remoteSVC=  ActorReference.getReferenceByName(
-                           "uan://nameserver1/id");

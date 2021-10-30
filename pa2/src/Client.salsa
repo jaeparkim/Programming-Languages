@@ -25,6 +25,12 @@ behavior Client {
     Vector fileServers = new Vector();
     DirectoryServer d;
 
+
+    // The fileBuilding HashMap is used to store information about the textfile before it gets downloaded
+    // It stores information in the following format:
+    // {String filename: Vector blocks}
+    // blocks:
+    // [String fs_uan_for_block_1, String fs_uan_for_block_2, ...]
     HashMap fileBuilding;
     int saved = 0;
     int total = 0;
@@ -89,6 +95,8 @@ behavior Client {
         
     }
 
+
+    // Creates a Directory Server Actor using the given UAN and UAL from the script.
     void createDirectoryServer(String s) {
         // standardOutput <- println(s); 
         String[] tokens = s.split(" ");
@@ -98,6 +106,9 @@ behavior Client {
         DirectoryServer d = new DirectoryServer(0) at (new UAN(uan_str), new UAL(ual_str));
     }
     
+    // Creates a File Server Actor using the given UAL and UAN from the script.
+    // Also calls the function that informs the Directory Server that a new File Server has been
+    // created
     void createFileServer(String s) {
         String[] tokens = s.split(" ");
         String ds_uan_str = tokens[1];
@@ -116,7 +127,7 @@ behavior Client {
         standardOutput <- println("Done Waiting");
     }
 
-
+    // Takes an input file and splits it up amongst the active file servers in blocks of 64 characters
     void create(String s){
         String[] tokens = s.split(" ");
         String ds_uan_str = tokens[1];
@@ -138,28 +149,19 @@ behavior Client {
         d <- store(filename, contents);// @ counter = counter+1;// @ standardOutput <- println("COUNTER +: " + Integer.toString(counter));
     }
 
+    
+    // Takes the name of a file and retrieves its meta data from the Directory Server and then retrieves
+    // the blocks from the individual File Servers
     void get(String s) {
         String[] tokens = s.split(" ");
         String ds_uan_str = tokens[1];
         String filename = tokens[2];
         DirectoryServer d = (DirectoryServer) DirectoryServer.getReferenceByName(new UAN(ds_uan_str));
         d <- retrieve(filename) @ self <- receiveBlocks(token, filename);
-        
-        
-        
-        
-        //self <- receiveBlocks(token, filename) @ self <- saveFile(token, filename);
-
-        // try{
-        //     Thread.sleep(5000);
-        // }catch(Exception e){
-        //     standardOutput <- println(e);
-        // }
-        // saveFile(filename);
-        // return "Done";
-
     }
 
+    // Uses the meta data from the Directory Server to retrieve the blocks from the File Servers 
+    // and organize them in the filebuilding map
     void receiveBlocks(Vector blocks, String fileName){
         // System.out.println("Blocks.size()" + Integer.toString(blocks.size()));
         int blocksRetrieved = 0;
@@ -174,6 +176,8 @@ behavior Client {
         } @ self <- saveFile(fileName);// @ counter = counter-1;// @ standardOutput <- println("COUNTER -: " + Integer.toString(counter));                                                                                                        
     }
 
+    // Uses the file name and the block number in order to get a specific block from a fileserver
+    // and store it in the filebuilding map
     void receiveBlock(String fileName, String blockText, int block){
         // System.out.println(blockText);
         Vector v = (Vector) fileBuilding.get(fileName);
@@ -181,6 +185,8 @@ behavior Client {
         v.setElementAt(blockText, block);
     }
 
+
+    // Builds the textfile from the blocks in the filebuilding map and downloads it to the file system
     void saveFile(String filename){
         System.out.println("Saving file");
         String filePath = "./downloads/" + filename;
@@ -195,6 +201,7 @@ behavior Client {
         // counter--;
     }
 
+    // Dereference the fileservers and the directory server in order for SALSA to garbage collect the actors
     void quit(String s) {
         // while(counter != 0){
 

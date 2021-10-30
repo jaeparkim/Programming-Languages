@@ -1,8 +1,0 @@
-module dsquares;
-
-behavior Square{
-    int square(int n){
-	standardOutput<-println("Computing square of: "+n);
-	return n*n;
-    }
-}

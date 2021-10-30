@@ -87,6 +87,16 @@ else
 	echo b failed.
 fi
 
+cmp -s input/bee_short.txt downloads/bee_short.txt
+bee_short_result=$?
+echo "bee_short:" $bee_short_result
+if [ $bee_short_result == "0" ]
+then
+	echo bee_short passed.
+else
+	echo bee_short failed.
+fi
+
 echo " "
 echo "Pressing enter will delete the output files."
 echo "Check their contents now."

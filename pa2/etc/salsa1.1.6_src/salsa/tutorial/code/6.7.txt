@@ -1,1 +1,0 @@
-book<-migrate("rmsp://europa.wcl.cs.rpi.edu:4040/"):priority;

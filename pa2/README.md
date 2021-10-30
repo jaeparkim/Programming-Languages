@@ -7,14 +7,17 @@ Jae Park and Roland Rao
 
 ### Features
 1. 
-
-### Bugs
-* as of _10/18/2021_
+2.
+3.
+4.
+5.
 
 
 ### Run 
 
 ```bash
-$ 
-
+$ ./delete
+$ ./run.sh script1.txt
+$ ./run.sh script2.txt
+$ ./run.sh script3.txt
 ```

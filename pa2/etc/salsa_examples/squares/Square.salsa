@@ -1,5 +1,0 @@
-module squares;
-
-behavior Square{
-    int square(int n){ return n*n;}
-}

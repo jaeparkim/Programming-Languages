@@ -1,2 +1,0 @@
-AddressBook remoteSVC= (AddressBook) 
-  AddressBook.getReferenceByName("uan://nameserver1/id");

@@ -84,27 +84,18 @@ behavior DirectoryServer {
       return blocks;        
     }
 
+    // Gets informed of a new file servers and stores it alphabetically in the 
+    // fileServer Vector
     void newFileServer(String fs_uan_str){
       standardOutput <- println("New File Server Created!!!");
       if(fs.isEmpty()) {
         fs.add(fs_uan_str);
-
         System.out.println("createDirectoryServer---------------------");
         System.out.println(fs.size());
-
       }
       else {
         fs.add((String) fs_uan_str);
         Collections.sort(fs);
-        // standardOutput <- println(fs);
-        // for(int i = 0; i < fs.size(); i++){
-
-        //   if(fs_uan_str.compareToIgnoreCase((String) fs.elementAt(i)) < 0) {
-        //     fs.insertElementAt( (String) fs_uan_str, i);
-        //     break;
-        //   }
-        // }
-        
       }
     }
 }
