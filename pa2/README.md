@@ -12,7 +12,7 @@ Jae Park and Roland Rao
 4. Retrieves a file by requesting the file's metadata from the directory server and using it to query the file servers for their portion of the file. The blocks are returned to the client and are organized in the HashMap fileBuilding. The blocks are then concatenated and downloaded to the downloads folder.
 5. After all instructions are ran the client will delete and dereference the File Servers and Directory Server so that SALSA can begin to garbage collect those actors.
 
-### Bugs
+### Bugs (as of Oct 30, 2021)
 1. In very rare circumstances, if the speed of the computer is lacking, the quit method can complete before all instructions are carried out. This causes the dereference of file servers and the directory server which are still in use. This causes null exceptions and other issues with SALSA that cause the program to not work as expected. Given that the program is going to be run in an isolated environment we don't believe that this issue wil present itself in testing.
 
 
@@ -24,3 +24,8 @@ $ ./run.sh script1.txt
 $ ./run.sh script2.txt
 $ ./run.sh script3.txt
 ```
+
+### Notes
+Because we have worked with the older version of FileUtility.java, we have included it
+in our submission under src/
+
