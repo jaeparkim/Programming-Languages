@@ -40,6 +40,7 @@ main :-
 		write('George V\'s ancestors are Victoria, Prince Albert, Edward VII, and Alexandra... '),
 		(
 			listAncestors(george_v, A),
+			write(A),
 			member(victoria, A), member(prince_albert, A),
 			member(edward_vii, A), member(alexandra, A),
 			length(A, 4),
@@ -75,6 +76,15 @@ main :-
 		(
 			hasSuccessor(george_v, edward_viii),
 			hasSuccessor(george_v, george_vi),
+			write('True.');
+			write('False... (but it should be true, check your code)')
+		),
+		nl
+	), nl,
+	(
+		write("Empress Victoria (of Germany) is not the successor to Victoria, even though she is Victoria's heir... "),
+		(
+			heirIsSuccessor(victoria),
 			write('True.');
 			write('False... (but it should be true, check your code)')
 		),
