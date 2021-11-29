@@ -1,3 +1,16 @@
+list_member(X,[X|_]).
+list_member(X,[_|TAIL]) :- list_member(X,TAIL).
+
+list_append(A,T,T) :- list_member(A,T),!.
+list_append(A,T,[A|T]).
+
+print_list([]) :- writeln("").
+print_list([H|TAIL]) :- print_list(TAIL), write(H).
+
+
+
+
+
 siblings(Person, Sibling) :- % how to test more rigorously if these rules work
 	parentOf(Z,Person), 
 	parentOf(Z,Sibling), 
@@ -19,10 +32,25 @@ hasDescendant(Person, Descendant) :-
 	% (Parent = Person -> true ; hasDescendant(Person, Parent)).
 
 listAncestors(Person, Ancestors) :-
+	%parentOf(Parent, Person),
+	
+	% writeln("***"),
+	% writeln(Parent),
+	
+	% list_append(Parent, Ancestors, Newlist),
+	% Ancestors = Newlist, % how to maintain and update a list, can we use a global?
+	% print_list(Ancestors),
+
+	% append(Parent, Ancestors, Ancestors),
 	parentOf(Parent, Person),
-	% write(Parent),
-	append([Parent], Ancestors, Ancestors), % how to maintain and update a list, can we use a global?
-	listAncestors(Parent, Ancestors).
+	append(Person, Ancestors, Newlist),
+	% parentOf(Parent, Person),
+	% write(nl),
+	print_list(Newlist), nl,
+	% Ancestors = Newlist,
+
+	% listAncestors(Parent, Ancestors).
+	listAncestors(Parent, Newlist).
 
 listDescendants(Person, Descendants) :-
 	childOf(Person, Child),
@@ -58,4 +86,3 @@ heirIsSuccessor(Person) :-
 			write(Minchild), write(Minyear)
 		),
 	monarch(Minchild).	
-
