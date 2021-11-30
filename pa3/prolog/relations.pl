@@ -31,14 +31,15 @@ hasDescendant(Person, Descendant) :-
 	% (Parent = Person -> true ; hasDescendant(Person, Parent)).
 
 listAncestors(Person, Ancestors) :-
+	findall(X, hasAncestor(Person, X), Ancestors).
 
-	append([Person], Ancestors, Newlist),
-	parentOf(Parent, Person);
-	% parentOf(Parent, Person), !;
+	% MY APPROACH
+	%append([Person], Ancestors, Newlist),
+	%parentOf(Parent, Person);
+	%    parentOf(Parent, Person), !;
+	%listAncestors(Parent, Newlist).
 
-	listAncestors(Parent, Newlist).
-
-
+	% USEFUL SYNTAX?
 	%parentOf(Parent, Person),
 	
 	% writeln("***"),
@@ -60,11 +61,11 @@ listAncestors(Person, Ancestors) :-
 
 
 listDescendants(Person, Descendants) :-
-	append([Child], Descendants, Newlist),
-	childOf(Child, Person);
-	% childOf(Child, Person), !;
-
-	listDescendants(Child, Newlist).
+	findall(X, hasDescendant(Person, X), Ancestors).
+	%append([Child], Descendants, Newlist),
+	%childOf(Child, Person);
+	%    childOf(Child, Person), !;
+	%listDescendants(Child, Newlist).
 
 hasHeir(Person, Heir) :-
 	Minyear = 2000;
