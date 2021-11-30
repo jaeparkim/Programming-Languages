@@ -61,7 +61,8 @@ listAncestors(Person, Ancestors) :-
 
 listDescendants(Person, Descendants) :-
 	append([Child], Descendants, Newlist),
-	childOf(Child, Person), !;
+	childOf(Child, Person);
+	% childOf(Child, Person), !;
 
 	listDescendants(Child, Newlist).
 
