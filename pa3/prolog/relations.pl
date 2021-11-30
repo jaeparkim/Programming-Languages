@@ -1,3 +1,5 @@
+% Helper functions
+% not really useful?
 list_member(X,[X|_]).
 list_member(X,[_|TAIL]) :- list_member(X,TAIL).
 
@@ -6,9 +8,6 @@ list_append(A,T,[A|T]).
 
 print_list([]) :- writeln("").
 print_list([H|TAIL]) :- print_list(TAIL), write(H).
-
-
-
 
 
 siblings(Person, Sibling) :- % how to test more rigorously if these rules work
@@ -32,6 +31,14 @@ hasDescendant(Person, Descendant) :-
 	% (Parent = Person -> true ; hasDescendant(Person, Parent)).
 
 listAncestors(Person, Ancestors) :-
+
+	append([Person], Ancestors, Newlist),
+	parentOf(Parent, Person);
+	% parentOf(Parent, Person), !;
+
+	listAncestors(Parent, Newlist).
+
+
 	%parentOf(Parent, Person),
 	
 	% writeln("***"),
@@ -42,20 +49,21 @@ listAncestors(Person, Ancestors) :-
 	% print_list(Ancestors),
 
 	% append(Parent, Ancestors, Ancestors),
-	parentOf(Parent, Person),
-	append(Person, Ancestors, Newlist),
+
+	% append([Person], Ancestors, Newlist);
 	% parentOf(Parent, Person),
 	% write(nl),
-	print_list(Newlist), nl,
+	%    print_list(Newlist), nl,
 	% Ancestors = Newlist,
-
+	% write(Parent),
 	% listAncestors(Parent, Ancestors).
-	listAncestors(Parent, Newlist).
+
 
 listDescendants(Person, Descendants) :-
-	childOf(Person, Child),
-	append([Child], Descendants, Descendants), % same question as above
-	listDescendants(Child, Descendants).
+	append([Child], Descendants, Newlist),
+	childOf(Child, Person), !;
+
+	listDescendants(Child, Newlist).
 
 hasHeir(Person, Heir) :-
 	Minyear = 2000;

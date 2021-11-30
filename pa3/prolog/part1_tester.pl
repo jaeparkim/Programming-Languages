@@ -40,7 +40,6 @@ main :-
 		write('George V\'s ancestors are Victoria, Prince Albert, Edward VII, and Alexandra... '),
 		(
 			listAncestors(george_v, A),
-			write(A),
 			member(victoria, A), member(prince_albert, A),
 			member(edward_vii, A), member(alexandra, A),
 			length(A, 4),
