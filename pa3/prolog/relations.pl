@@ -26,7 +26,9 @@ hasAncestor(Person, Ancestor) :-
 	(Child = Person -> true ; hasAncestor(Person, Child)).
 
 hasDescendant(Person, Descendant) :-
-	hasAncestor(Descendant, Person).
+	% hasAncestor(Descendant, Person).
+	parentOf(Parent, Descendant),
+	(Parent = Person -> true; hasDescendant(Person, Parent)).
 	% parentOf(Descendant, Parent), 
 	% (Parent = Person -> true ; hasDescendant(Person, Parent)).
 
@@ -61,7 +63,7 @@ listAncestors(Person, Ancestors) :-
 
 
 listDescendants(Person, Descendants) :-
-	findall(X, hasDescendant(Person, X), Ancestors).
+	findall(Z, hasDescendant(Person, Z), Descendants).
 	%append([Child], Descendants, Newlist),
 	%childOf(Child, Person);
 	%    childOf(Child, Person), !;
@@ -71,8 +73,9 @@ hasHeir(Person, Heir) :-
 	Minyear = 2000;
 	Minchild = "";
 	monarch(Person),
-	childOf(Child, Person), birthYear(Child, Year), 
-		(Year < Minyear -> 
+	childOf(Child, Person),
+	birthYear(Child, Year), 
+	(Year < Minyear -> 
 			Minyear = Year, Minchild = Child; 
 			write(Minchild), write(Minyear)
 		),
