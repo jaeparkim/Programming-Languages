@@ -70,19 +70,12 @@ listDescendants(Person, Descendants) :-
 	%listDescendants(Child, Newlist).
 
 hasHeir(Person, Heir) :-
-	Minyear = 2000;
-	Minchild = "";
 	monarch(Person),
-	childOf(Child, Person),
-	birthYear(Child, Year), 
-	(Year < Minyear -> 
-			Minyear = Year, Minchild = Child; 
-			write(Minchild), write(Minyear)
-		),
-		(Heir = Minchild ->
-			true ; 
-			false
-		).
+	findall(Year, (childOf(Child, Person), birthYear(Child, Year)), Years),
+	min_list(Years, Min),
+	birthYear(Heir, HeirYear),
+	HeirYear = Min.
+
 
 hasSuccessor(Person, Successor) :-
 	monarch(Person),
@@ -90,12 +83,8 @@ hasSuccessor(Person, Successor) :-
 	parentOf(Person, Successor).
 
 heirIsSuccessor(Person) :-
-	Minyear = 2000;
-	Minchild = "";
 	monarch(Person),
-	childOf(Child, Person), birthYear(Child, Year), 
-		(Year < Minyear -> 
-			Minyear = Year, Minchild = Child; 
-			write(Minchild), write(Minyear)
-		),
-	monarch(Minchild).	
+	findall(Year, (childOf(Child, Person), birthYear(Child, Year)), Years),
+	min_list(Years, Min),
+	birthYear(C, Min),
+	monarch(C).
