@@ -81,11 +81,11 @@ main :-
 		nl
 	), nl,
 	(
-		write("Empress Victoria (of Germany) is not the successor to Victoria, even though she is Victoria's heir... "),
+		write('Empress Victoria (of Germany) is not the successor to Victoria, even though she is Victoria\'s heir... '),
 		(
 			heirIsSuccessor(victoria),
 			write('True.');
-			write('False... (but it should be true, check your code)')
+			write('False.')
 		),
 		nl
 	),

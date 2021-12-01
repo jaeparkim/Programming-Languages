@@ -33,7 +33,8 @@ hasDescendant(Person, Descendant) :-
 	% (Parent = Person -> true ; hasDescendant(Person, Parent)).
 
 listAncestors(Person, Ancestors) :-
-	findall(X, hasAncestor(Person, X), Ancestors).
+	findall(X, hasAncestor(Person, X), Ancestors),
+	write(Ancestors).
 
 	% MY APPROACH
 	%append([Person], Ancestors, Newlist),
@@ -87,4 +88,5 @@ heirIsSuccessor(Person) :-
 	findall(Year, (childOf(Child, Person), birthYear(Child, Year)), Years),
 	min_list(Years, Min),
 	birthYear(C, Min),
+	% write(C),
 	monarch(C).
