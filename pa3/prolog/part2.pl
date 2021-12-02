@@ -8,8 +8,8 @@ read_loop :-
 		Len > 0,
 		write(Line), nl,
 		sentence(T, Line, []),
-		()
-		langauge_def(Line),
+		writeln(T),
+		% langauge_def(Line),
 		read_loop;
 		Len =< 0,
 		write('Read last line.'), 
@@ -42,7 +42,7 @@ main :-
 
 % --> what does this mean
 sentence(t(A, C, V)) --> attribute(A), imperative1, imperative2, be, comparison(C), throwaway, value(V), [.].
-sentence(t(A,V1,V2)) --> attribute(A), imperative1, imperative2, be, interval, value(V1), [to], value(V2).
+sentence(t(A,V1,V2)) --> attribute(A), imperative1, imperative2, be, interval, value(V1), [to], value(V2), [.].
 sentence(t(I, C, A, D)) --> [processor], [type], id(I), [has],
 	value(C), [cores], [,], [uses], value(A), [square], [centimeters], 
 	[,], [and], [costs], value(D), [dollars], [.].
@@ -66,6 +66,7 @@ comparison(less) --> [less].
 comparison(greater) --> [greater].
 throwaway --> [to] | [than].
 
-interval --> ['in the interval of'] | ['in the range of'].
+interval --> [in], [the], [interval], [of].
+interval --> [in], [the], [range], [of].
 
 value(V) --> [V], {integer(V)}.
