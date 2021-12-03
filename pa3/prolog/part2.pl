@@ -1,49 +1,92 @@
 :- [read_line].
+% listmember(X,[X|]).
+% listmember(X,[|TAIL]) :- list_member(X,TAIL).
+
+% list_append(A,T,T) :- list_member(A,T),!.
+% list_append(A,T,[A|T]).
+
+% print_list([]) :- writeln("").
+% print_list([H|TAIL]) :- print_list(TAIL), write(H).
+
 
 % how is this func working
-read_loop :-
+read_loop(P, C) :-
 	read_line(Line),
 	length(Line, Len),
 	(
 		Len > 0,
 		write(Line), nl,
 		sentence(T, Line, []),
-		writeln(T),
-		% langauge_def(Line),
-		read_loop;
+		writeln("Before if"),
+		(length(T, Length), Length =:= 4 ->  
+			append(C, [], NC),
+			append(P, [T], NP);
+			append(C, [T], NC),
+			append(P, [], NP)
+		),
+		writeln(NP),
+		writeln(NC),
+		read_loop(NP, NC);
 		Len =< 0,
-		write('Read last line.'), 
+		write('Read last line.'),
+		optimize(P, C),
+		% convert_constraints(C),
 		nl
 	).
 
 
-% language_processing(Line, Len) :-
-% 	nth0(0, Line, First),
-% 	(First = processor -> processor_def(Line, Len) ; constraint_def(Line, Len)).
-
-% Are all processor definitions going to be the exact same structure
-langauge_processing(Line) :-
-	% sentence(Line, [the]).
-	sentence(T, Line, []),
-	write(T),nl.
-
-constraint_def(Len) :-
-	write("Constraint Len = "),
-	writeln(Len).
-
-% how should we go about this
-% sentence() :-
-% 	true.
-
-
 main :-
-	read_loop.
+	P = [],
+	C = [],
+	read_loop(P, C).
+
+optimize(NP, NC) :-
+	length(NP, Length),
+	(
+		
+	)
+
+% cores(NP, Constraint) :-
+% 	nth0(0, Constraint, First),
+% 	nth0(1, Constraint, Second),
+% 	nth0(2, Constraint, Third),
+% 	(Second = less -> )
+
+% area() :-
+
+% cost() :-
 
 
-% --> what does this mean
-sentence(t(A, C, V)) --> attribute(A), imperative1, imperative2, be, comparison(C), throwaway, value(V), [.].
-sentence(t(A,V1,V2)) --> attribute(A), imperative1, imperative2, be, interval, value(V1), [to], value(V2), [.].
-sentence(t(I, C, A, D)) --> [processor], [type], id(I), [has],
+	
+% convert_constraints(NC) :-
+% 	length(NC, Len),
+% 	(
+% 		Len > 0,
+% 		NC = [H|T],
+% 		nth0(0, H, First),
+% 		nth0(1, H, Second),
+% 		nth0(2, H, Third),
+% 		(integer(Second) -> ;
+% 			(Second = less -> replace(less, 0, H, NewH)
+% 		)
+% 		replace(H, NewH, NC, ADF)
+% 		writeln(H),
+% 		convert_constraints(ADF);
+% 		Len =< 0,
+% 		write('Read last constraint.'),
+% 		nl
+% 	).
+
+
+
+% constraint(A, B, C, D, Processor, Constraints) :-
+	
+
+
+
+sentence([A, C, V]) --> attribute(A), imperative1, imperative2, be, comparison(C), throwaway, value(V), [.].
+sentence([A,V1,V2]) --> attribute(A), imperative1, imperative2, be, interval, value(V1), [to], value(V2), [.].
+sentence([I, C, A, D]) --> [processor], [type], id(I), [has],
 	value(C), [cores], [,], [uses], value(A), [square], [centimeters], 
 	[,], [and], [costs], value(D), [dollars], [.].
 
